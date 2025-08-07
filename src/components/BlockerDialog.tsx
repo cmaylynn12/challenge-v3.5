@@ -1,12 +1,5 @@
 import AuthContext from "@/contexts/AuthWrapper";
-import {
-  Button,
-  CloseButton,
-  Dialog,
-  Input,
-  Portal,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Dialog, Input, Portal, VStack } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 
 const BlockerDialog = () => {

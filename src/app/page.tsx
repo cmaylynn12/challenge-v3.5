@@ -1,7 +1,19 @@
 "use client";
 import AuthContext from "@/contexts/AuthWrapper";
 import { gql, useQuery } from "@apollo/client";
-import { Pagination, ButtonGroup, IconButton } from "@chakra-ui/react";
+import {
+  Pagination,
+  ButtonGroup,
+  IconButton,
+  Link,
+  Image,
+  CloseButton,
+  Dialog,
+  Portal,
+  Badge,
+  List,
+  Flex,
+} from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
@@ -13,8 +25,11 @@ export default function InformationPage() {
   const [pageNumber, setPageNumber] = useState(
     Number(searchParams.get("page")) || 1
   ); // default to 1 if not present, accounts for on first load scenario
+  const [isCharacterInfoOpen, setIsCharacterInfoOpen] = useState(false);
+  const [selectedCharacter, setSelectedCharacter] = useState<any | null>(null);
 
   const { username, jobTitle } = useContext(AuthContext);
+
   const authenticated = username && jobTitle;
 
   useEffect(() => {
@@ -38,7 +53,10 @@ export default function InformationPage() {
           status,
           species,
           gender,
-          image
+          image,
+          location {
+            name
+          }
         }
       }
     }
@@ -65,12 +83,21 @@ export default function InformationPage() {
     router.push(`?page=${page.value}`);
   };
 
+  const handleCharacterClick = (character: any) => {
+    setIsCharacterInfoOpen(true);
+    setSelectedCharacter(character);
+  };
+
   return (
     <div>
       <main>
         <ul>
-          {data.characters.results.map((character: any) => (
-            <li>{character.name}</li>
+          {data.characters.results.map((character: any, index: number) => (
+            <li key={`character-${index}`}>
+              <Link href="#" onClick={() => handleCharacterClick(character)}>
+                {character.name}
+              </Link>
+            </li>
           ))}
         </ul>
         <Pagination.Root
@@ -104,6 +131,48 @@ export default function InformationPage() {
             </Pagination.NextTrigger>
           </ButtonGroup>
         </Pagination.Root>
+        {isCharacterInfoOpen && (
+          <Dialog.Root open={true}>
+            <Portal>
+              <Dialog.Backdrop />
+              <Dialog.Positioner>
+                <Dialog.Content>
+                  <Dialog.Header>
+                    <Dialog.Title>{selectedCharacter.name}</Dialog.Title>
+                    <Badge>{selectedCharacter.status}</Badge>
+                  </Dialog.Header>
+                  <Dialog.Body>
+                    <Flex>
+                      <Image
+                        h="240px"
+                        src={selectedCharacter.image}
+                        alt={`Image of ${selectedCharacter.name}`}
+                      />
+                      <List.Root as="ul">
+                        <List.Item>
+                          Species: {selectedCharacter.species}
+                        </List.Item>
+                        <List.Item>
+                          Gender: {selectedCharacter.gender}
+                        </List.Item>
+                        <List.Item>
+                          Location: {selectedCharacter.location.name}
+                        </List.Item>
+                      </List.Root>
+                    </Flex>
+                  </Dialog.Body>
+                  <Dialog.Footer></Dialog.Footer>
+                  <Dialog.CloseTrigger
+                    asChild
+                    onClick={() => setIsCharacterInfoOpen(false)}
+                  >
+                    <CloseButton size="sm" />
+                  </Dialog.CloseTrigger>
+                </Dialog.Content>
+              </Dialog.Positioner>
+            </Portal>
+          </Dialog.Root>
+        )}
       </main>
       <footer>Leonardo Challenge v3.5</footer>
     </div>

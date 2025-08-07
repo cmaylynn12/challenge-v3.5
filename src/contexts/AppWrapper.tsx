@@ -3,6 +3,7 @@ import BlockerDialog from "@/components/BlockerDialog";
 import { Provider } from "@/components/ui/provider";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { ReactNode } from "react";
+import { AuthProvider } from "./AuthWrapper";
 
 type AppWrapperProps = {
   children: ReactNode;
@@ -15,11 +16,13 @@ const client = new ApolloClient({
 
 export const AppWrapper = ({ children }: AppWrapperProps) => {
   return (
-    <ApolloProvider client={client}>
-      <Provider>
-        <BlockerDialog />
-        {children}
-      </Provider>
-    </ApolloProvider>
+    <AuthProvider>
+      <ApolloProvider client={client}>
+        <Provider>
+          <BlockerDialog />
+          {children}
+        </Provider>
+      </ApolloProvider>
+    </AuthProvider>
   );
 };

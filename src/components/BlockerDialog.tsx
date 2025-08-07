@@ -1,3 +1,4 @@
+import AuthContext from "@/contexts/AuthWrapper";
 import {
   Button,
   CloseButton,
@@ -6,12 +7,14 @@ import {
   Portal,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const BlockerDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [usernameInput, setUsernameInput] = useState("");
   const [jobTitleInput, setJobTitleInput] = useState("");
+
+  const { username, jobTitle, setUserInfo } = useContext(AuthContext);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -22,8 +25,7 @@ const BlockerDialog = () => {
     }
   });
   const handleSave = () => {
-    localStorage.setItem("username", usernameInput);
-    localStorage.setItem("jobTitle", jobTitleInput);
+    setUserInfo(usernameInput, jobTitleInput);
     setIsOpen(false);
   };
 

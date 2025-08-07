@@ -1,8 +1,9 @@
 "use client";
+import AuthContext from "@/contexts/AuthWrapper";
 import { gql, useQuery } from "@apollo/client";
 import { Pagination, ButtonGroup, IconButton } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 export default function InformationPage() {
@@ -13,6 +14,12 @@ export default function InformationPage() {
     Number(searchParams.get("page")) || 1
   ); // default to 1 if not present, accounts for on first load scenario
 
+  const { username, jobTitle } = useContext(AuthContext);
+  const authenticated = username && jobTitle;
+
+  useEffect(() => {
+    router.push(`?page=${pageNumber}`);
+  }, []);
   /*
    * Decided on the character endpoint to satisfy core requirements:
    * 1. Guarantees image availability for the data; location and episodes do not
@@ -37,7 +44,9 @@ export default function InformationPage() {
     }
   `;
 
-  const { loading, error, data } = useQuery(GET_CHARACTERS_QUERY);
+  const { loading, error, data } = useQuery(GET_CHARACTERS_QUERY, {
+    skip: !authenticated,
+  });
 
   if (loading) {
     return <div>Loading...</div>;
@@ -45,6 +54,10 @@ export default function InformationPage() {
 
   if (error) {
     return <div>Error: {error.message}</div>;
+  }
+
+  if (!authenticated) {
+    return;
   }
 
   const handleNavigation = (page: any) => {

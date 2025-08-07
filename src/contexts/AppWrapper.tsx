@@ -5,6 +5,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { ReactNode, useState } from "react";
 import { AuthProvider } from "./AuthWrapper";
 import Header from "@/components/Header";
+import { Center, Text } from "@chakra-ui/react";
 
 type AppWrapperProps = {
   children: ReactNode;
@@ -24,6 +25,18 @@ export const AppWrapper = ({ children }: AppWrapperProps) => {
           <BlockerDialog isOpen={isOpen} setIsOpen={(e) => setIsOpen(e)} />
           <Header onOpen={() => setIsOpen(true)} />
           {children}
+          <Center
+            as="footer"
+            w="100%"
+            backgroundColor="#9a3eaa"
+            padding="20px"
+            position="fixed"
+            bottom={0}
+          >
+            <Text textStyle="lg" color="#FFF">
+              Leonardo Challenge v3.5
+            </Text>
+          </Center>
         </Provider>
       </ApolloProvider>
     </AuthProvider>

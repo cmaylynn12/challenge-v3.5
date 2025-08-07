@@ -1,12 +1,14 @@
 "use client";
 import { gql, useQuery } from "@apollo/client";
 import { Pagination, ButtonGroup, IconButton } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 export default function InformationPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [pageNumber, setPageNumber] = useState(
     Number(searchParams.get("page")) || 1
   ); // default to 1 if not present, accounts for on first load scenario
@@ -44,6 +46,12 @@ export default function InformationPage() {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+
+  const handleNavigation = (page: any) => {
+    setPageNumber(page.value);
+    router.push(`?page=${page.value}`);
+  };
+
   return (
     <div>
       <main>
@@ -69,7 +77,7 @@ export default function InformationPage() {
               render={(page) => (
                 <IconButton
                   variant={{ base: "ghost", _selected: "outline" }}
-                  onClick={() => setPageNumber(page.value)}
+                  onClick={() => handleNavigation(page)}
                 >
                   {page.value}
                 </IconButton>

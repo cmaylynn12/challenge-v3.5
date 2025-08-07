@@ -37,13 +37,16 @@ export default function InformationPage() {
 
   const authenticated = username && jobTitle;
 
+  // Always sync state with URL param (once mounted)
   useEffect(() => {
     router.push(`?page=${pageNumber}`);
   }, [router]);
+
   /*
    * Decided on the character endpoint to satisfy core requirements:
-   * 1. Guarantees image availability for the data; location and episodes do not
+   * 1. Guarantees image availability for the data; whereas location and episodes do not
    * 2. Large and rich dataset -- characters are perfect for demonstrating an information page!
+   * TODO: move this query to a separate folder e.g. graphql/queries.ts
    */
 
   const GET_CHARACTERS_QUERY = gql`
@@ -68,7 +71,7 @@ export default function InformationPage() {
   `;
 
   const { loading, error, data } = useQuery(GET_CHARACTERS_QUERY, {
-    skip: !authenticated,
+    skip: !authenticated, // Only run query if user is authenticated
   });
 
   if (loading) {
@@ -79,6 +82,7 @@ export default function InformationPage() {
     return <div>Error: {error.message}</div>;
   }
 
+  // Don't show anything if user is not authenticated
   if (!authenticated) {
     return;
   }
@@ -96,6 +100,7 @@ export default function InformationPage() {
   return (
     <Flex className="info-page" minHeight="100vh" direction="column">
       <main>
+        {/* Character List */}
         <Center marginBottom="20px">
           <List.Root width="75%">
             {data.characters.results.map(
@@ -113,6 +118,7 @@ export default function InformationPage() {
             )}
           </List.Root>
         </Center>
+        {/* Pagination controls */}
         <Center>
           <Pagination.Root
             count={data?.characters.info.count}
@@ -146,6 +152,7 @@ export default function InformationPage() {
             </ButtonGroup>
           </Pagination.Root>
         </Center>
+        {/* Dialog showing selected character details */}
         {selectedCharacter && isCharacterInfoOpen && (
           <Dialog.Root open={true}>
             <Portal>
@@ -189,6 +196,7 @@ export default function InformationPage() {
           </Dialog.Root>
         )}
       </main>
+      {/* Footer - fixed to bottom */}
       <Center
         as="footer"
         w="100%"

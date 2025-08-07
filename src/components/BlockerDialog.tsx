@@ -13,6 +13,7 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
 
   const { setUserInfo } = useContext(AuthContext);
 
+  // Load localStorage values just once (avoid flashing Dialog)
   useEffect(() => {
     const username = localStorage.getItem("username") || "";
     const jobTitle = localStorage.getItem("jobTitle") || "";
@@ -56,7 +57,12 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
               </VStack>
             </Dialog.Body>
             <Dialog.Footer>
-              <Button onClick={handleSave}>Save</Button>
+              <Button
+                onClick={handleSave}
+                disabled={!usernameInput || !jobTitleInput}
+              >
+                Save
+              </Button>
             </Dialog.Footer>
           </Dialog.Content>
         </Dialog.Positioner>

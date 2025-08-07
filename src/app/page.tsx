@@ -14,6 +14,7 @@ import {
   Badge,
   List,
   Flex,
+  Center,
 } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -92,19 +93,19 @@ export default function InformationPage() {
   };
 
   return (
-    <div>
+    <Flex className="info-page" minHeight="100vh" direction="column">
       <main>
-        <ul>
+        <List.Root>
           {data.characters.results.map(
             (character: Character, index: number) => (
-              <li key={`character-${index}`}>
+              <List.Item key={`character-${index}`}>
                 <Link href="#" onClick={() => handleCharacterClick(character)}>
                   {character.name}
                 </Link>
-              </li>
+              </List.Item>
             )
           )}
-        </ul>
+        </List.Root>
         <Pagination.Root
           count={data?.characters.info.count}
           pageSize={20}
@@ -179,7 +180,7 @@ export default function InformationPage() {
           </Dialog.Root>
         )}
       </main>
-      <footer>Leonardo Challenge v3.5</footer>
-    </div>
+      <Center as="footer">Leonardo Challenge v3.5</Center>
+    </Flex>
   );
 }

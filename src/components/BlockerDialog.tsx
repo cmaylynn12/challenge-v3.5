@@ -2,19 +2,26 @@ import AuthContext from "@/contexts/AuthWrapper";
 import { Button, Dialog, Input, Portal, VStack } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 
-const BlockerDialog = () => {
-  const [isOpen, setIsOpen] = useState(false);
+type BlockerDialogProps = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+};
+
+const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [jobTitleInput, setJobTitleInput] = useState("");
 
   const { setUserInfo } = useContext(AuthContext);
 
   useEffect(() => {
-    const username = localStorage.getItem("username");
-    const jobTitle = localStorage.getItem("jobTitle");
+    const username = localStorage.getItem("username") || "";
+    const jobTitle = localStorage.getItem("jobTitle") || "";
 
     if (!username || !jobTitle) {
       setIsOpen(true);
+    } else {
+      setUsernameInput(username);
+      setJobTitleInput(jobTitle);
     }
   }, []);
 

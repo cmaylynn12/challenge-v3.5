@@ -1,4 +1,5 @@
 "use client";
+import BlockerDialog from "@/components/BlockerDialog";
 import { Provider } from "@/components/ui/provider";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { ReactNode } from "react";
@@ -15,7 +16,10 @@ const client = new ApolloClient({
 export const AppWrapper = ({ children }: AppWrapperProps) => {
   return (
     <ApolloProvider client={client}>
-      <Provider>{children}</Provider>
+      <Provider>
+        <BlockerDialog />
+        {children}
+      </Provider>
     </ApolloProvider>
   );
 };

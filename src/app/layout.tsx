@@ -1,5 +1,6 @@
 import { AppWrapper } from "@/contexts/AppWrapper";
 import "./globals.css";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -9,7 +10,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <AppWrapper>{children}</AppWrapper>
+        <AppWrapper>
+          <Suspense>{children}</Suspense>
+        </AppWrapper>
       </body>
     </html>
   );

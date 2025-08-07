@@ -7,16 +7,17 @@ const BlockerDialog = () => {
   const [usernameInput, setUsernameInput] = useState("");
   const [jobTitleInput, setJobTitleInput] = useState("");
 
-  const { username, jobTitle, setUserInfo } = useContext(AuthContext);
+  const { setUserInfo } = useContext(AuthContext);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
-    const jobTitleInput = localStorage.getItem("jobTitle");
+    const jobTitle = localStorage.getItem("jobTitle");
 
-    if (!username || !jobTitleInput) {
+    if (!username || !jobTitle) {
       setIsOpen(true);
     }
-  });
+  }, []);
+
   const handleSave = () => {
     setUserInfo(usernameInput, jobTitleInput);
     setIsOpen(false);

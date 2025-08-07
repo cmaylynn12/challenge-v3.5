@@ -1,5 +1,6 @@
 "use client";
 import AuthContext from "@/contexts/AuthWrapper";
+import { Character } from "@/types/Character";
 import { gql, useQuery } from "@apollo/client";
 import {
   Pagination,
@@ -26,7 +27,9 @@ export default function InformationPage() {
     Number(searchParams.get("page")) || 1
   ); // default to 1 if not present, accounts for on first load scenario
   const [isCharacterInfoOpen, setIsCharacterInfoOpen] = useState(false);
-  const [selectedCharacter, setSelectedCharacter] = useState<any | null>(null);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
+    null
+  );
 
   const { username, jobTitle } = useContext(AuthContext);
 
@@ -34,7 +37,7 @@ export default function InformationPage() {
 
   useEffect(() => {
     router.push(`?page=${pageNumber}`);
-  }, []);
+  }, [router]);
   /*
    * Decided on the character endpoint to satisfy core requirements:
    * 1. Guarantees image availability for the data; location and episodes do not
@@ -78,12 +81,12 @@ export default function InformationPage() {
     return;
   }
 
-  const handleNavigation = (page: any) => {
-    setPageNumber(page.value);
-    router.push(`?page=${page.value}`);
+  const handleNavigation = (page: number) => {
+    setPageNumber(page);
+    router.push(`?page=${page}`);
   };
 
-  const handleCharacterClick = (character: any) => {
+  const handleCharacterClick = (character: Character) => {
     setIsCharacterInfoOpen(true);
     setSelectedCharacter(character);
   };
@@ -92,13 +95,15 @@ export default function InformationPage() {
     <div>
       <main>
         <ul>
-          {data.characters.results.map((character: any, index: number) => (
-            <li key={`character-${index}`}>
-              <Link href="#" onClick={() => handleCharacterClick(character)}>
-                {character.name}
-              </Link>
-            </li>
-          ))}
+          {data.characters.results.map(
+            (character: Character, index: number) => (
+              <li key={`character-${index}`}>
+                <Link href="#" onClick={() => handleCharacterClick(character)}>
+                  {character.name}
+                </Link>
+              </li>
+            )
+          )}
         </ul>
         <Pagination.Root
           count={data?.characters.info.count}
@@ -117,7 +122,7 @@ export default function InformationPage() {
               render={(page) => (
                 <IconButton
                   variant={{ base: "ghost", _selected: "outline" }}
-                  onClick={() => handleNavigation(page)}
+                  onClick={() => handleNavigation(page.value)}
                 >
                   {page.value}
                 </IconButton>
@@ -131,7 +136,7 @@ export default function InformationPage() {
             </Pagination.NextTrigger>
           </ButtonGroup>
         </Pagination.Root>
-        {isCharacterInfoOpen && (
+        {selectedCharacter && isCharacterInfoOpen && (
           <Dialog.Root open={true}>
             <Portal>
               <Dialog.Backdrop />

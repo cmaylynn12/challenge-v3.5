@@ -15,6 +15,7 @@ import {
   List,
   Flex,
   Center,
+  Text,
 } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -95,48 +96,56 @@ export default function InformationPage() {
   return (
     <Flex className="info-page" minHeight="100vh" direction="column">
       <main>
-        <List.Root>
-          {data.characters.results.map(
-            (character: Character, index: number) => (
-              <List.Item key={`character-${index}`}>
-                <Link href="#" onClick={() => handleCharacterClick(character)}>
-                  {character.name}
-                </Link>
-              </List.Item>
-            )
-          )}
-        </List.Root>
-        <Pagination.Root
-          count={data?.characters.info.count}
-          pageSize={20}
-          page={pageNumber}
-          defaultPage={1}
-        >
-          <ButtonGroup variant="ghost" size="sm">
-            <Pagination.PrevTrigger asChild>
-              <IconButton>
-                <LuChevronLeft />
-              </IconButton>
-            </Pagination.PrevTrigger>
-
-            <Pagination.Items
-              render={(page) => (
-                <IconButton
-                  variant={{ base: "ghost", _selected: "outline" }}
-                  onClick={() => handleNavigation(page.value)}
-                >
-                  {page.value}
+        <Center marginBottom="20px">
+          <List.Root width="75%">
+            {data.characters.results.map(
+              (character: Character, index: number) => (
+                <List.Item key={`character-${index}`}>
+                  <Link
+                    href="#"
+                    onClick={() => handleCharacterClick(character)}
+                    color="#9094a6"
+                  >
+                    <Text textStyle="3xl">{character.name}</Text>
+                  </Link>
+                </List.Item>
+              )
+            )}
+          </List.Root>
+        </Center>
+        <Center>
+          <Pagination.Root
+            count={data?.characters.info.count}
+            pageSize={20}
+            page={pageNumber}
+            defaultPage={1}
+          >
+            <ButtonGroup variant="ghost" size="sm">
+              <Pagination.PrevTrigger asChild>
+                <IconButton>
+                  <LuChevronLeft />
                 </IconButton>
-              )}
-            />
+              </Pagination.PrevTrigger>
 
-            <Pagination.NextTrigger asChild>
-              <IconButton>
-                <LuChevronRight />
-              </IconButton>
-            </Pagination.NextTrigger>
-          </ButtonGroup>
-        </Pagination.Root>
+              <Pagination.Items
+                render={(page) => (
+                  <IconButton
+                    variant={{ base: "ghost", _selected: "solid" }}
+                    onClick={() => handleNavigation(page.value)}
+                  >
+                    {page.value}
+                  </IconButton>
+                )}
+              />
+
+              <Pagination.NextTrigger asChild>
+                <IconButton>
+                  <LuChevronRight />
+                </IconButton>
+              </Pagination.NextTrigger>
+            </ButtonGroup>
+          </Pagination.Root>
+        </Center>
         {selectedCharacter && isCharacterInfoOpen && (
           <Dialog.Root open={true}>
             <Portal>
@@ -180,7 +189,18 @@ export default function InformationPage() {
           </Dialog.Root>
         )}
       </main>
-      <Center as="footer">Leonardo Challenge v3.5</Center>
+      <Center
+        as="footer"
+        w="100%"
+        backgroundColor="#9a3eaa"
+        padding="20px"
+        position="fixed"
+        bottom={0}
+      >
+        <Text textStyle="lg" color="#FFF">
+          Leonardo Challenge v3.5
+        </Text>
+      </Center>
     </Flex>
   );
 }

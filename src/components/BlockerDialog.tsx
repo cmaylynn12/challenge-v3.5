@@ -1,5 +1,12 @@
 import AuthContext from "@/contexts/AuthWrapper";
-import { Button, Dialog, Input, Portal, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  CloseButton,
+  Dialog,
+  Input,
+  Portal,
+  VStack,
+} from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 
 type BlockerDialogProps = {
@@ -11,7 +18,7 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
   const [usernameInput, setUsernameInput] = useState("");
   const [jobTitleInput, setJobTitleInput] = useState("");
 
-  const { setUserInfo } = useContext(AuthContext);
+  const { username, jobTitle, setUserInfo } = useContext(AuthContext);
 
   // Load localStorage values just once (avoid flashing Dialog)
   useEffect(() => {
@@ -24,7 +31,7 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
       setUsernameInput(username);
       setJobTitleInput(jobTitle);
     }
-  }, []);
+  }, [setIsOpen]);
 
   const handleSave = () => {
     setUserInfo(usernameInput, jobTitleInput);
@@ -32,15 +39,26 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
   };
 
   return (
-    <Dialog.Root motionPreset="slide-in-bottom" open={isOpen}>
+    <Dialog.Root
+      motionPreset="slide-in-bottom"
+      open={isOpen}
+      placement="center"
+    >
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
               <Dialog.Title>
-                Please enter your details to continue viewing
+                {username && jobTitle
+                  ? "Change your details"
+                  : "Please enter your details to continue viewing"}
               </Dialog.Title>
+              {username && jobTitle && (
+                <Dialog.CloseTrigger asChild onClick={() => setIsOpen(false)}>
+                  <CloseButton size="sm" />
+                </Dialog.CloseTrigger>
+              )}
             </Dialog.Header>
             <Dialog.Body>
               <VStack gap="15px">

@@ -28,7 +28,7 @@ export const CharacterCard = ({ character }: CharacterCardProps) => {
           cursor: "pointer",
         }}
       >
-        <Image src={character.image} />
+        <Image src={character.image} alt={`Image of ${character.name}`} />
       </Card.Root>
       {isOpen && (
         <CharacterInfo

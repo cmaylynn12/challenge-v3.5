@@ -8,6 +8,9 @@ import {
   Image,
   Box,
   Text,
+  HStack,
+  VStack,
+  Badge,
 } from "@chakra-ui/react";
 
 type CharacterInfoProps = {
@@ -31,46 +34,58 @@ export const CharacterInfo = ({
   }
 
   return (
-    <Dialog.Root open={true} placement="center" onInteractOutside={onClose}>
+    <Dialog.Root
+      size="lg"
+      open={true}
+      placement="center"
+      onInteractOutside={onClose}
+    >
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content overflow="hidden">
-            <Flex gap={5} alignItems="center">
-              <Flex>
+            <Box>
+              <HStack gap="15px">
                 <Image
-                  objectFit="cover"
-                  maxW="200px"
                   src={selectedCharacter.image}
                   alt={`Image of ${selectedCharacter.name}`}
                 />
-              </Flex>
-              <Box as="ul">
-                <Text
-                  as="li"
-                  textStyle="4xl"
-                  fontFamily="fantasy"
-                  lineHeight="2.2rem"
-                >
-                  {selectedCharacter.name}
-                </Text>
-                <Flex alignItems="center" gap="8px" marginTop="8px">
-                  <FaCircle size="8px" color={statusColor} />
-
-                  <Text as="li" textStyle="md" fontWeight="600">
-                    {selectedCharacter.status} - {selectedCharacter.species} -{" "}
-                    {selectedCharacter.gender}
+                <VStack align="flex-start">
+                  <Badge>{selectedCharacter.species}</Badge>
+                  <Text
+                    textStyle="4xl"
+                    fontFamily="fantasy"
+                    lineHeight="2.2rem"
+                  >
+                    {selectedCharacter.name}
                   </Text>
-                </Flex>
-
-                <Text as="li" textStyle="sm" marginTop="12px" fontWeight="600">
-                  Last known location:
-                </Text>
-                <Text as="li" textStyle="lg">
-                  {selectedCharacter.location.name}
-                </Text>
-              </Box>
-            </Flex>
+                  <HStack gap="6px">
+                    <FaCircle size="8px" color={statusColor} />
+                    <Text
+                      textStyle="sm"
+                      fontWeight="600"
+                      textTransform="capitalize"
+                    >
+                      {selectedCharacter.status} - {selectedCharacter.gender}
+                    </Text>
+                  </HStack>
+                  <VStack align="flex-start" gap={0}>
+                    <Text textStyle="sm" marginTop="12px" fontWeight="600">
+                      Place of origin:
+                    </Text>
+                    <Text textStyle="sm">{selectedCharacter.origin.name}</Text>
+                  </VStack>
+                  <VStack align="flex-start" gap={0}>
+                    <Text textStyle="sm" fontWeight="600">
+                      Last known location:
+                    </Text>
+                    <Text textStyle="sm">
+                      {selectedCharacter.location.name}
+                    </Text>
+                  </VStack>
+                </VStack>
+              </HStack>
+            </Box>
             <Dialog.CloseTrigger asChild onClick={onClose}>
               <CloseButton size="sm" />
             </Dialog.CloseTrigger>

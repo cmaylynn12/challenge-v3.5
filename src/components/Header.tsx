@@ -1,6 +1,7 @@
 import AuthContext from "@/contexts/AuthWrapper";
 import { Flex, Image, Text, Avatar, defineStyle } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useId, useState } from "react";
+import { Tooltip } from "./ui/tooltip";
 
 type HeaderProps = {
   onOpen: () => void;
@@ -15,10 +16,11 @@ const ringCss = defineStyle({
 
 export const Header = ({ onOpen }: HeaderProps) => {
   const { username, jobTitle } = useContext(AuthContext);
+  const id = useId();
 
   return (
     <Flex justify="space-between" padding="20px" background="#9a3eaa">
-      <Image src="/rick-and-morty.svg" w="200px" />
+      <Image src="/rick-and-morty.svg" w="200px" alt="Rick and Morty Logo" />
       <Flex alignItems="center" gap="16px">
         {username && jobTitle && (
           <>
@@ -26,15 +28,27 @@ export const Header = ({ onOpen }: HeaderProps) => {
               color="#FFF"
               fontWeight="600"
             >{`Hi, ${username} the ${jobTitle}`}</Text>
-            <Avatar.Root
-              css={ringCss}
-              size="lg"
-              onClick={onOpen}
-              variant="solid"
-              colorPalette="purple"
+            <Tooltip
+              ids={{ trigger: id }}
+              content="Click to change details"
+              openDelay={0}
+              closeDelay={0}
             >
-              <Avatar.Fallback name={username || "user"} />
-            </Avatar.Root>
+              <Avatar.Root
+                ids={{ root: id }}
+                css={ringCss}
+                size="lg"
+                onClick={onOpen}
+                variant="solid"
+                colorPalette="cyan"
+                transition="transform 0.2s, box-shadow 0.2s"
+                _hover={{
+                  cursor: "pointer",
+                }}
+              >
+                <Avatar.Fallback name={username || "user"} />
+              </Avatar.Root>
+            </Tooltip>
           </>
         )}
       </Flex>

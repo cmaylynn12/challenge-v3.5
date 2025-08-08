@@ -3,7 +3,6 @@ import { FaCircle } from "react-icons/fa";
 import {
   Dialog,
   Portal,
-  Flex,
   CloseButton,
   Image,
   Box,

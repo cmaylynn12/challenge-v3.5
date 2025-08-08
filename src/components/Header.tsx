@@ -1,6 +1,6 @@
 import AuthContext from "@/contexts/AuthWrapper";
 import { Flex, Image, Text, Avatar, defineStyle } from "@chakra-ui/react";
-import { useContext, useId, useState } from "react";
+import { useContext, useId } from "react";
 import { Tooltip } from "./ui/tooltip";
 
 type HeaderProps = {

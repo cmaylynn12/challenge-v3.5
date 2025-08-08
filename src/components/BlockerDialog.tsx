@@ -7,7 +7,7 @@ import {
   Portal,
   VStack,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 type BlockerDialogProps = {
   isOpen: boolean;
@@ -41,8 +41,8 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
     setIsOpen(false);
   };
 
-  const handleKeyDown = (e: any) => {
-    if (e.key === "Enter" || e.keyCode === 13) {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
       handleSave();
     }
   };

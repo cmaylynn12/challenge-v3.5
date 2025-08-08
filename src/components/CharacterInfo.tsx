@@ -50,8 +50,10 @@ export const CharacterInfo = ({
                   src={selectedCharacter.image}
                   alt={`Image of ${selectedCharacter.name}`}
                 />
-                <VStack align="flex-start">
-                  <Badge>{selectedCharacter.species}</Badge>
+                <VStack align="flex-start" flexShrink={0}>
+                  <Badge colorPalette="green" variant="solid">
+                    {selectedCharacter.species}
+                  </Badge>
                   <Text
                     textStyle="4xl"
                     fontFamily="fantasy"

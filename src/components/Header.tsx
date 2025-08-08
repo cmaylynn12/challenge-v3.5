@@ -35,6 +35,8 @@ export const Header = ({ onOpen }: HeaderProps) => {
               closeDelay={0}
             >
               <Avatar.Root
+                as="button"
+                tabIndex={0}
                 ids={{ root: id }}
                 css={ringCss}
                 size="lg"

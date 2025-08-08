@@ -38,6 +38,7 @@ export const CharacterGrid = ({ page }: CharacterGridProps) => {
             {data?.characters.results.map(
               (character: Character, index: number) => (
                 <CharacterCard
+                  tabIndex={index + 1}
                   character={character}
                   key={`character-${index}`}
                 />

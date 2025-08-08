@@ -13,6 +13,7 @@ export const CharacterCard = ({ character }: CharacterCardProps) => {
   return (
     <>
       <Card.Root
+        as="button"
         maxH="120px"
         maxW="120px"
         overflow="hidden"

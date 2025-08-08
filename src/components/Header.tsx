@@ -19,7 +19,11 @@ export const Header = ({ onOpen }: HeaderProps) => {
   const id = useId();
 
   return (
-    <Flex justify="space-between" padding="20px" background="#9a3eaa">
+    <Flex
+      justify="space-between"
+      padding="20px"
+      background="linear-gradient(#6c00e1, #8d04c5 100px)"
+    >
       <Image src="/rick-and-morty.svg" w="200px" alt="Rick and Morty Logo" />
       <Flex alignItems="center" gap="16px">
         {username && jobTitle && (
@@ -27,6 +31,7 @@ export const Header = ({ onOpen }: HeaderProps) => {
             <Text
               color="#FFF"
               fontWeight="600"
+              className="lacquer-regular"
             >{`Hi, ${username} the ${jobTitle}`}</Text>
             <Tooltip
               ids={{ trigger: id }}

@@ -43,24 +43,28 @@ export const CharacterInfo = ({
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content overflow="hidden">
-            <Box>
+            <Box background="linear-gradient(0deg, #a2ed3f, #d8ff007a)">
               <HStack gap="15px">
                 <Image
                   src={selectedCharacter.image}
                   alt={`Image of ${selectedCharacter.name}`}
                 />
-                <VStack align="flex-start" flexShrink={0}>
-                  <Badge colorPalette="green" variant="solid">
+                <VStack align="flex-start">
+                  <Badge
+                    colorPalette="green"
+                    variant="solid"
+                    textTransform="capitalize"
+                  >
                     {selectedCharacter.species}
                   </Badge>
                   <Text
-                    textStyle="4xl"
-                    fontFamily="fantasy"
+                    textStyle="3xl"
                     lineHeight="2.2rem"
+                    className="bowlby-one-sc-regular "
                   >
                     {selectedCharacter.name}
                   </Text>
-                  <HStack gap="6px">
+                  <HStack gap="6px" marginTop="-5px">
                     <FaCircle size="8px" color={statusColor} />
                     <Text
                       textStyle="sm"
@@ -74,7 +78,9 @@ export const CharacterInfo = ({
                     <Text textStyle="sm" marginTop="12px" fontWeight="600">
                       Place of origin:
                     </Text>
-                    <Text textStyle="sm">{selectedCharacter.origin.name}</Text>
+                    <Text textStyle="sm" textTransform="capitalize">
+                      {selectedCharacter.origin.name}
+                    </Text>
                   </VStack>
                   <VStack align="flex-start" gap={0}>
                     <Text textStyle="sm" fontWeight="600">

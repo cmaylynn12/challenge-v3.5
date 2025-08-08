@@ -10,6 +10,7 @@ type PageNavigatorProps = {
 export const Paginator = ({ page, onNavigate }: PageNavigatorProps) => {
   const router = useRouter();
 
+  // Parse page number back to parent for query to fetch page data
   const handleOnNavigate = (pageNumber: number) => {
     onNavigate(pageNumber);
     router.push(`?page=${pageNumber}`);
@@ -41,7 +42,6 @@ export const Paginator = ({ page, onNavigate }: PageNavigatorProps) => {
               </IconButton>
             )}
           />
-
           <Pagination.NextTrigger asChild>
             <IconButton>
               <LuChevronRight />

@@ -20,7 +20,8 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
 
   const { username, jobTitle, setUserInfo } = useContext(AuthContext);
 
-  // Load localStorage values just once (avoid flashing Dialog)
+  // Load localStorage values just once (avoid flashing Dialog due to hydration)
+  // Another option to use solely username and jobTitle from the context is the add a flag for isHydrated before loading the dialog
   useEffect(() => {
     const username = localStorage.getItem("username") || "";
     const jobTitle = localStorage.getItem("jobTitle") || "";
@@ -34,8 +35,16 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
   }, [setIsOpen]);
 
   const handleSave = () => {
+    // Potential to add stronger validation here i.e. length, sanitisation, checking against actual jobs
+    // On that, the number of jobs could be endless, it would be a better idea to use a dropdown and draw values from an endpoint for users to select
     setUserInfo(usernameInput, jobTitleInput);
     setIsOpen(false);
+  };
+
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter" || e.keyCode === 13) {
+      handleSave();
+    }
   };
 
   return (
@@ -44,12 +53,13 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
       open={isOpen}
       placement="center"
     >
+      {/* Dialog component from Chakra UI */}
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>
+              <Dialog.Title className="bowlby-one-sc-regular" textStyle="2xl">
                 {username && jobTitle
                   ? "Change your details"
                   : "Please enter your details to continue viewing"}
@@ -66,11 +76,13 @@ const BlockerDialog = ({ isOpen, setIsOpen }: BlockerDialogProps) => {
                   value={usernameInput}
                   placeholder="Enter your username"
                   onChange={(e) => setUsernameInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
                 <Input
                   value={jobTitleInput}
                   placeholder="Enter your job title"
                   onChange={(e) => setJobTitleInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
               </VStack>
             </Dialog.Body>

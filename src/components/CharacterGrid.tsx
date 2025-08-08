@@ -32,7 +32,7 @@ export const CharacterGrid = ({ page }: CharacterGridProps) => {
   return (
     <Flex className="info-page" direction="column" minH="400px">
       <main>
-        {/* Character List */}
+        {/* Character Grid */}
         <Center marginBottom="20px" transition="backgrounds 0.2s ease-in-out">
           <SimpleGrid columns={5} gap="25px">
             {data?.characters.results.map(

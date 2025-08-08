@@ -28,12 +28,12 @@ export const AppWrapper = ({ children }: AppWrapperProps) => {
           <Center
             as="footer"
             w="100%"
-            backgroundColor="#9a3eaa"
+            background="linear-gradient(#6c00e1, #8d04c5 100px)"
             padding="20px"
             position="fixed"
             bottom={0}
           >
-            <Text textStyle="lg" color="#FFF">
+            <Text textStyle="lg" color="#FFF" className="lacquer-regular">
               Leonardo Challenge v3.5
             </Text>
           </Center>
